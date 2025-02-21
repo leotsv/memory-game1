@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Card from './components/Card';
 
@@ -14,8 +14,8 @@ const cardImages = [
 ];
 
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://leotsv.github.io/memory-game1/api'  // Production backend URL
-  : 'http://localhost:8080/api';           // Development backend URL
+  ? 'http://memory-game-env.eba-xxxx.us-east-1.elasticbeanstalk.com/api'  // AWS URL
+  : 'http://localhost:5000/api';  // Local development         // Development backend URL
 
 function App() {
   console.log("App is rendering");
@@ -78,16 +78,21 @@ function App() {
     shuffleCards();
   }, []);
 
-  // Add this function to check for game completion
-  useEffect(() => {
-    const allMatched = cards.every(card => card.matched);
-    if (allMatched && cards.length > 0) {
-      const timeInSeconds = Math.floor((Date.now() - gameStartTime) / 1000);
-      saveScore(turns, timeInSeconds);
+  // Wrap getTopScores in useCallback
+  const getTopScores = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_URL}/scores/top`);
+      if (response.ok) {
+        const scores = await response.json();
+        setTopScores(scores);
+      }
+    } catch (error) {
+      console.error('Error fetching scores:', error);
     }
-  }, [cards]);
+  }, [setTopScores]);
 
-  const saveScore = async (turns, timeInSeconds) => {
+  // saveScore can now use getTopScores as a stable dependency
+  const saveScore = useCallback(async (turns, timeInSeconds) => {
     const playerName = prompt("Game Complete! Enter your name:");
     if (playerName) {
       try {
@@ -104,29 +109,27 @@ function App() {
         });
         if (response.ok) {
           alert("Score saved successfully!");
+          getTopScores();
         }
       } catch (error) {
         console.error('Error saving score:', error);
       }
     }
-  };
+  }, [getTopScores]);
 
-  const getTopScores = async () => {
-    try {
-      const response = await fetch(`${API_URL}/scores/top`);
-      if (response.ok) {
-        const scores = await response.json();
-        setTopScores(scores);
-      }
-    } catch (error) {
-      console.error('Error fetching scores:', error);
+  // Then use it in useEffect
+  useEffect(() => {
+    const allMatched = cards.every(card => card.matched);
+    if (allMatched && cards.length > 0) {
+      const timeInSeconds = Math.floor((Date.now() - gameStartTime) / 1000);
+      saveScore(turns, timeInSeconds);
     }
-  };
+  }, [cards, gameStartTime, turns, saveScore]);
 
   // Add this useEffect to load scores when component mounts
   useEffect(() => {
     getTopScores();
-  }, []);
+  }, [getTopScores]);
 
   return (
     <div className="App" style={{ backgroundColor: '#1b1523', minHeight: '100vh', padding: '20px' }}>
