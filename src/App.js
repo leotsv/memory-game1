@@ -133,7 +133,7 @@ function App() {
 
   return (
     <div className="App" style={{ backgroundColor: '#1b1523', minHeight: '100vh', padding: '20px' }}>
-      <h1>Memory Game</h1>
+      <h1>Memory Game 3</h1>
       <button onClick={shuffleCards}>New Game</button>
       <button onClick={getTopScores}>Refresh Scores</button>
       
