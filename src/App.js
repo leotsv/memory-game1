@@ -14,9 +14,8 @@ const cardImages = [
 ];
 
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'http://memory-game-env.eba-q2fxrmvr.us-east-1.elasticbeanstalk.com'  // AWS URL
-  : 'http://memory-game-env.eba-q2fxrmvr.us-east-1.elasticbeanstalk.com';
- // : 'http://localhost:5000/api';  // Local development         // Development backend URL
+  ? 'https://memory-game-env.eba-q2fxrmvr.us-east-1.elasticbeanstalk.com'  // AWS URL
+  : 'http://localhost:5000/api';  // Local development         // Development backend URL
 
 function App() {
   console.log("App is rendering");
