@@ -3,13 +3,13 @@ import './App.css';
 import Card from './components/Card';
 
 const cardImages = [
-    // { src: "🐶", matched: false },
-    // { src: "🐱", matched: false },
-    // { src: "🐭", matched: false },
-    // { src: "🐹", matched: false },
-    // { src: "🐰", matched: false },
-    // { src: "🦊", matched: false },
-    // { src: "🐻", matched: false },
+  { src: "🐶", matched: false },
+  { src: "🐱", matched: false },
+  { src: "🐭", matched: false },
+  { src: "🐹", matched: false },
+  { src: "🐰", matched: false },
+  { src: "🦊", matched: false },
+  { src: "🐻", matched: false },
   { src: "🐼", matched: false }
 ];
 
