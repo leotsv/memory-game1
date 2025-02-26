@@ -1,0 +1,5 @@
+npm install --save-dev gh-pages
+git add .
+git commit -m "Ready for deployment"
+git push -u origin main
+npm run deploy

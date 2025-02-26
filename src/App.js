@@ -3,19 +3,20 @@ import './App.css';
 import Card from './components/Card';
 
 const cardImages = [
-  { src: "🐶", matched: false },
-  { src: "🐱", matched: false },
-  { src: "🐭", matched: false },
-  { src: "🐹", matched: false },
-  { src: "🐰", matched: false },
-  { src: "🦊", matched: false },
-  { src: "🐻", matched: false },
+    // { src: "🐶", matched: false },
+    // { src: "🐱", matched: false },
+    // { src: "🐭", matched: false },
+    // { src: "🐹", matched: false },
+    // { src: "🐰", matched: false },
+    // { src: "🦊", matched: false },
+    // { src: "🐻", matched: false },
   { src: "🐼", matched: false }
 ];
 
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'http://memory-game-env.eba-q2fxrmvr.us-east-1.elasticbeanstalk.com/'  // AWS URL
-  : 'http://localhost:5000/api';  // Local development         // Development backend URL
+  ? 'http://memory-game-env.eba-q2fxrmvr.us-east-1.elasticbeanstalk.com'  // AWS URL
+  : 'http://memory-game-env.eba-q2fxrmvr.us-east-1.elasticbeanstalk.com';
+ // : 'http://localhost:5000/api';  // Local development         // Development backend URL
 
 function App() {
   console.log("App is rendering");
@@ -81,7 +82,7 @@ function App() {
   // Wrap getTopScores in useCallback
   const getTopScores = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/scores/top`);
+      const response = await fetch(`${API_URL}/api/scores/top`);
       if (response.ok) {
         const scores = await response.json();
         setTopScores(scores);
@@ -96,7 +97,7 @@ function App() {
     const playerName = prompt("Game Complete! Enter your name:");
     if (playerName) {
       try {
-        const response = await fetch(`${API_URL}/scores`, {
+        const response = await fetch(`${API_URL}/api/scores`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
